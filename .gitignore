@@ -20,6 +20,9 @@ build/
 *.iml
 *.ipr
 out/
+.classpath
+.project
+.settings/
 target/
 
 ### NetBeans ###

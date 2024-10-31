@@ -15,7 +15,7 @@
     </properties>
 
     <dependencies>
-        <!-- RestAssured for API testing -->
+
         <dependency>
             <groupId>io.rest-assured</groupId>
             <artifactId>rest-assured</artifactId>
@@ -23,7 +23,6 @@
             <scope>test</scope>
         </dependency>
 
-        <!-- JSON Schema validation for RestAssured -->
         <dependency>
             <groupId>io.rest-assured</groupId>
             <artifactId>json-schema-validator</artifactId>
@@ -31,7 +30,6 @@
             <scope>test</scope>
         </dependency>
 
-        <!-- JUnit 5 for unit testing -->
         <dependency>
             <groupId>org.junit.jupiter</groupId>
             <artifactId>junit-jupiter-api</artifactId>
@@ -44,7 +42,7 @@
             <version>5.9.1</version>
             <scope>test</scope>
         </dependency>
-        <!-- RestAssured for API testing -->
+
         <dependency>
             <groupId>io.rest-assured</groupId>
             <artifactId>rest-assured</artifactId>
@@ -52,7 +50,6 @@
             <scope>test</scope>
         </dependency>
 
-        <!-- JSON Schema validation for RestAssured -->
         <dependency>
             <groupId>io.rest-assured</groupId>
             <artifactId>json-schema-validator</artifactId>
@@ -60,7 +57,6 @@
             <scope>test</scope>
         </dependency>
 
-        <!-- TestNG for unit testing -->
         <dependency>
             <groupId>org.testng</groupId>
             <artifactId>testng</artifactId>
@@ -71,14 +67,13 @@
 
     <build>
         <plugins>
-            <!-- Maven Surefire Plugin for running tests -->
+
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-surefire-plugin</artifactId>
                 <version>3.0.0-M5</version>
             </plugin>
 
-            <!-- Maven Surefire Plugin for running TestNG tests -->
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-surefire-plugin</artifactId>
@@ -91,5 +86,13 @@
             </plugin>
         </plugins>
     </build>
+
+    <distributionManagement>
+        <repository>
+            <id>github</id>
+            <name>GitHub STALKSA Apache Maven Packages</name>
+            <url>https://maven.pkg.github.com/STALKSA/PetStoreAutomation</url>
+        </repository>
+    </distributionManagement>
 
 </project>

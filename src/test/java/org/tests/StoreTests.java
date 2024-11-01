@@ -24,7 +24,8 @@ public class StoreTests {
 
     @Test
     public void testPlaceOrder() {
-        String newOrder = "{ \"id\": 1, \"petId\": 12345, \"quantity\": 2, \"shipDate\": \"2024-11-01T15:52:01.552Z\", \"status\": \"placed\", \"complete\": true }";
+        String newOrder = "{ \"id\": 1, \"petId\": 12345, \"quantity\": 2, \"shipDate\": \"2024-11-01T15:52:01.552Z\"," +
+                " \"status\": \"placed\", \"complete\": true }";
         given()
                 .header("Content-Type", "application/json")
                 .body(newOrder)
@@ -38,7 +39,8 @@ public class StoreTests {
     //сервер обрабатывает заказ с petId = -1 и возвращает код 200
     @Test
     public void testPlaceInvalidPetIdOrder() {
-        String newOrder = "{ \"id\": 2, \"petId\": -1, \"quantity\": 2, \"shipDate\": \"2024-11-01T15:52:01.552Z\", \"status\": \"placed\", \"complete\": true }"; // Некорректный целочисленный ID
+        String newOrder = "{ \"id\": 2, \"petId\": -1, \"quantity\": 2, \"shipDate\": \"2024-11-01T15:52:01.552Z\", " +
+                "\"status\": \"placed\", \"complete\": true }";
         given()
                 .header("Content-Type", "application/json")
                 .body(newOrder)
@@ -92,7 +94,7 @@ public class StoreTests {
     public void testDeleteOrder() {
         given()
                 .when()
-                .delete("/store/order/{orderId}", 123)
+                .delete("/store/order/{orderId}", 1)
                 .then()
                 .statusCode(200);
     }

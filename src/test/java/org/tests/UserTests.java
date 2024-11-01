@@ -26,10 +26,10 @@ public class UserTests {
                 .statusCode(200);
     }
 
-    //сервер обрабатывает невалидный формат имени пользователя !@# как верный с кодом ответа 200
+    //сервер обрабатывает невалидный формат имени пользователя как верный с кодом ответа 200
     @Test
     public void testCreateUserWithInvalidUsername() {
-        String newUser = "{ \"id\": 1, \"username\": \"!@#\", \"firstName\": \"John\", " +
+        String newUser = "{ \"id\": 1, \"username\": \"  \", \"firstName\": \"John\", " +
                 "\"lastName\": \"Doe\", \"email\": \"john.doe@example.com\", \"password\": \"password123\"," +
                 " \"phone\": \"123-456-7890\", \"userStatus\": 1 }";
 
@@ -59,7 +59,7 @@ public class UserTests {
                 .when()
                 .post("/user/createWithArray")
                 .then()
-                .statusCode(200); 
+                .statusCode(200);
     }
 
 
@@ -111,7 +111,7 @@ public class UserTests {
     //API создает нового пользователя вместо того, чтобы возвращать ошибку 404
     @Test
     public void testUpdateNonExistingUser() {
-        String updatedUser = "{ \"id\": 1, \"username\": \"nonexistentuser\", \"firstName\": \"Johnny\", " +
+        String updatedUser = "{ \"id\": 1, \"username\": \"nouser\", \"firstName\": \"Johnny\", " +
                 "\"lastName\": \"Doe\", \"email\": \"johnny.doe@example.com\", \"password\": \"newpassword\"," +
                 " \"phone\": \"123-456-7890\", \"userStatus\": 1 }";
 
@@ -119,15 +119,14 @@ public class UserTests {
                 .header("Content-Type", "application/json")
                 .body(updatedUser)
                 .when()
-                .put("/user/{username}", "nouser")
+                .put("/user/{username}", "user")
                 .then()
                 .statusCode(404);
     }
 
-    //API возвращает 200 даже при отправке некорректных данных
     @Test
     public void testUpdateUserWithInvalidData() {
-        String invalidUser = "{ \"id\": 1, \"username\": 12345, \"firstName\": \"Johnny\", \"lastName\": \"Doe\" }";
+        String invalidUser = "{ \"id\": 1, \"username\": 12345, \"firstName\": \"Johnny\", \"lastName\":  }";
 
         given()
                 .header("Content-Type", "application/json")
@@ -161,7 +160,7 @@ public class UserTests {
     public void testDeleteUserWithInvalidUsername() {
         given()
                 .when()
-                .delete("/user/{username}", " ")
+                .delete("/user/{username}", "!@#")
                 .then()
                 .statusCode(400);
     }
@@ -184,11 +183,11 @@ public class UserTests {
     public void testLoginUserWithInvalidCredentials() {
         given()
                 .queryParam("username", "johndoe")
-                .queryParam("password", "   ") // Используем неверный пароль
+                .queryParam("password", "   ")
                 .when()
                 .get("/user/login")
                 .then()
-                .statusCode(400); // Ожидаем код 400 для неверных данных
+                .statusCode(400);
     }
 
     @Test

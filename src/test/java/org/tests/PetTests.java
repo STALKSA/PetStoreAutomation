@@ -26,7 +26,7 @@ public class PetTests {
     public void testGetNonExistingPet() {
         given()
                 .when()
-                .get("/pet/{petId}", 99999)
+                .get("/pet/{petId}", 99999999)
                 .then()
                 .statusCode(404);
     }

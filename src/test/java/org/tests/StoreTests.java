@@ -35,6 +35,32 @@ public class StoreTests {
                 .body("status", equalTo("placed"));
     }
 
+    //сервер обрабатывает заказ с petId = -1 и возвращает код 200
+    @Test
+    public void testPlaceInvalidPetIdOrder() {
+        String newOrder = "{ \"id\": 2, \"petId\": -1, \"quantity\": 2, \"shipDate\": \"2024-11-01T15:52:01.552Z\", \"status\": \"placed\", \"complete\": true }"; // Некорректный целочисленный ID
+        given()
+                .header("Content-Type", "application/json")
+                .body(newOrder)
+                .when()
+                .post("/store/order")
+                .then()
+                .statusCode(400); // Ожидаем ошибку 400
+    }
+
+    @Test
+    public void testPlaceInvalidOrder() {
+        String newOrder = "{ \"id\": 2, \"petId\": 12345, \"quantity\": 2, \"shipDate\": , \"status\": \"placed\", \"complete\": true }"; // Некорректный целочисленный ID
+        given()
+                .header("Content-Type", "application/json")
+                .body(newOrder)
+                .when()
+                .post("/store/order")
+                .then()
+                .statusCode(400);
+    }
+
+
     @Test
     public void testGetOrderById() {
         given()
@@ -46,15 +72,6 @@ public class StoreTests {
     }
 
     @Test
-    public void testDeleteOrder() {
-        given()
-                .when()
-                .delete("/store/order/{orderId}", 1)
-                .then()
-                .statusCode(200);
-    }
-
-    @Test
     public void testGetNonExistingOrder() {
         given()
                 .when()
@@ -62,4 +79,42 @@ public class StoreTests {
                 .then()
                 .statusCode(404);
     }
+
+    @Test
+    public void testGetNonCorrectInputOrder() {
+        given()
+                .when()
+                .get("/store/order/{orderId}", "abc")
+                .then()
+                .statusCode(anyOf(equalTo(400), equalTo(404)));
+    }
+    @Test
+    public void testDeleteOrder() {
+        given()
+                .when()
+                .delete("/store/order/{orderId}", 123)
+                .then()
+                .statusCode(200);
+    }
+
+    @Test
+    public void testDeleteNotFoundOrder() {
+        given()
+                .when()
+                .delete("/store/order/{orderId}", 99999999)
+                .then()
+                .statusCode(404);
+    }
+
+    //API обрабатывает отрицательные или некорректные значения ID как "не найденный ресурс", а не как "некорректный запрос"
+    @Test
+    public void testDeleteInvalidOrder() {
+        given()
+                .when()
+                .delete("/store/order/{orderId}", -1)
+                .then()
+                .statusCode(400);
+    }
+
+
 }

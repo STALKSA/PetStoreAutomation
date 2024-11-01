@@ -24,6 +24,21 @@ public class UserTests {
                 .statusCode(200);
     }
 
+    //сервер обрабатывает невалидный формат имени пользователя !@# как верный с кодом ответа 200
+    @Test
+    public void testCreateUserWithInvalidUsername() {
+        String newUser = "{ \"id\": 1, \"username\": \"!@#\", \"firstName\": \"John\", \"lastName\": \"Doe\", \"email\": \"john.doe@example.com\", \"password\": \"password123\", \"phone\": \"123-456-7890\", \"userStatus\": 1 }";
+
+        given()
+                .header("Content-Type", "application/json")
+                .body(newUser)
+                .when()
+                .post("/user")
+                .then()
+                .statusCode(400);
+    }
+
+
     @Test
     public void testGetUserByUsername() {
         given()
@@ -33,6 +48,29 @@ public class UserTests {
                 .statusCode(200)
                 .body("username", equalTo("johndoe"));
     }
+
+    @Test
+    public void testGetNonExistingUser() {
+        given()
+                .when()
+                .get("/user/{username}", "nonexistentuser")
+                .then()
+                .statusCode(404);
+    }
+
+    //сервер интерпретирует некорректное имя пользователя как несуществующего пользователя, а не как невалидный запрос,
+    //т.к. при создании пользователя считай данный ввод валидным
+    @Test
+    public void testGetInvalidUsername() {
+        given()
+                .when()
+                .get("/user/{username}", "!@#") // Используем строку с недопустимыми символами
+                .then()
+                .statusCode(400); // Ожидаем код 400 за некорректный запрос
+    }
+
+
+
 
     @Test
     public void testUpdateUser() {

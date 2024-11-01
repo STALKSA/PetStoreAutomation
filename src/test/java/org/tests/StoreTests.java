@@ -45,7 +45,7 @@ public class StoreTests {
                 .when()
                 .post("/store/order")
                 .then()
-                .statusCode(400); // Ожидаем ошибку 400
+                .statusCode(400);
     }
 
     @Test
